@@ -11,6 +11,8 @@
             }
             #center{
                 text-align: center;
+                font-size: 3vw;
+                color:white;
             }
             #title{
                 font-size: 5vw;
