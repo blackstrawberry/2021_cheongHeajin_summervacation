@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>마술 쇼</title>
+        <style>
+            #center{
+                text-align: center;
+            }
+            #title{
+                font-size: 5vw;
+                font-weight: bold;
+            }
+            #center-box{
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                font-size: 2.5vw;
+            }
+            .button {font-size:3vw; padding:3% 10%}
+            body{
+                background-image:url('magicbg.jpg');
+                background-repeat : no-repeat;
+                background-size : cover ;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="center-box">
+            <fieldset id="center">
+                <legend id="title">🦹‍♀️마술 프로그램을 시작합니다.🧙‍♀️</legend>
+                1부터 50까지의 숫자를 생각하신 후 준비가 된다면 다음을 클릭하세요.<br><br>
+                <button class="button" name="btnfun1" onClick='location.href="magic2.php?val=00"'>다음</button>
+            </fieldset>
+        </div>
+        
+
+    </body>
+</html>
