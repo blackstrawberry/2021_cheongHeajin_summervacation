@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Letsee WebApp: Simple 3D Object #1</title>
+
+    <!-- THREE.js -->
+    <script src="https://unpkg.com/three@0.121.1/build/three.min.js"></script>
+	  <!-- Letsee WebAR SDK -->
+		<script src="https://developer.letsee.io/api/webar?key=78a9b1904ea2c36b618bfe8899224f3a5c032d34ab8a9ad0669932f85cf2cedd"></script>
+
+</head>
+<body>
+<script>
+    let scene;
+    let renderer;
+    let entity;
+    
+    letsee.ready(() => {
+      letsee.start();
+      letsee.addTHREE(THREE).then(obj => {
+        renderer = obj.renderer;
+        scene = obj.scene;
+        letsee.addTarget('https://lh3.googleusercontent.com/proxy/7wYv6sXEoBBoFm3Ky_2G9FwHYChfjVUjgvfJu3eSX3NcLlUi8qrV-4JiCG_OFFTpoAy87_pvC9h7ZjWbSF0ljajiLz4X1Yhaqh8hVConRlHYsvqhY-Q')
+				.then(_entity => {
+          entity = _entity;
+
+          const geometry = new THREE.BoxGeometry();
+          const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+          const cube = new THREE.Mesh( geometry, material );
+          cube.scale.set(30, 30, 30);
+          cube.position.z = 30;
+          entity.add(cube);
+				  
+          scene.add(entity);
+
+          const animate = async function() {
+            requestAnimationFrame(animate);
+            
+            const camera = letsee.threeRenderer().getDeviceCamera();
+            renderer.render(scene, camera);
+
+            await letsee.threeRenderer().update();
+          };
+          animate();
+        });
+      });
+
+    });
+    letsee.init({trackerType: 'image'});
+</script>
+</body>
+</html>

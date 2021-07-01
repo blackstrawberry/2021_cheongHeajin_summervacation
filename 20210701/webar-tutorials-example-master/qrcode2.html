@@ -1,0 +1,31 @@
+<!--
+2. letsee.addTarget(targetURI: string),
+letsee.createXRElement(element: HTMLElement, entity: Entity),
+letsee.bindXRElement(xrElement: XRElement, entity: Entity)
+를 이용한 QRCode 타겟 등록 (엔티티 생성) 과 XRElement 생성 후
+엔티티에 XRElement를 바인딩하는 방법
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to use the QRCode target #2 [Using API]</title>
+    <script src="https://developer.letsee.io/api/webar?key=[AUTHENTICATION_KEY_OF_YOUR_PROJECT]"></script>
+</head>
+<body>
+<div id="container">
+    This is the XRElement
+</div>
+<script>
+    letsee.ready(() => {
+        letsee.start();
+        letsee.addTarget('https://[domain]/[description_filename].json')
+            .then(entity => {
+                let xrElement = letsee.createXRElement(document.getElementById('container'));
+                letsee.bindXRElement(xrElement, entity);
+            });
+    });
+    letsee.init({trackerType: 'qrcode'});
+</script>
+</body>
+</html>

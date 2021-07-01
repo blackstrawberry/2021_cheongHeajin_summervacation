@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: Audio with button</title>
+
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+
+    <!-- Adding configuration .JSON file. -->
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('[YOUR_TARGET_URI]');
+            width: 260px;
+            height: 160px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- The id of this div tag MUST be the same with id defined in media="place" style. -->
+<div id="container">
+</div>
+
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+
+    letsee.ready(() => {
+        letsee.start();
+        createElement();
+    });
+    letsee.init();
+
+    const createElement = () => {
+        let container = document.getElementById('container');
+
+        let table = document.createElement('div');
+        table.style.display = 'inline-block';
+        table.style.margin = '1px';
+
+        let audio = new Audio('./assets/audio/tts59_magic_display.mp3');
+
+        let button1 = document.createElement('button');
+        button1.innerHTML = '재생';
+        button1.addEventListener('click', () => {
+            audio.play().then(() => alert('오디오 재생')).catch(err => console.error(err));
+        });
+        let button2 = document.createElement('button');
+        button2.innerHTML = '중지';
+        button2.addEventListener('click', () => {
+            audio.pause();
+        });
+
+        table.appendChild(button1);
+        table.appendChild(button2);
+
+        container.appendChild(table);
+    };
+
+</script>
+</body>
+</html>

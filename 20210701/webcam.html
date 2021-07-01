@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebCam</title>
+</head>
+<body>
+    <div style="position: relative;">    
+        <video id="video" width="100%" height="100%" autoplay></video>
+    </div>
+    <div style="position: relative; left:10px; top: -70px;">
+        <img src="/rudolf.png"></img>>
+    </div>
+    <canvas id="canvas" width="960" height="720"></canvas>
+    <button type="button" id="webcamBtn">캡쳐하기</button>
+    <script>
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            var video = document.getElementById('video');
+            video.srcObject = stream;
+            video.play();
+        });
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var video = document.getElementById('video');
+    document.getElementById("webcamBtn").addEventListener("click",function() {
+        context.drawImage(video,0,0,960,720);
+    });
+    </script>
+</script>
+</body>
+</html>

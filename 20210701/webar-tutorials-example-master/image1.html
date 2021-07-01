@@ -1,0 +1,33 @@
+<!--
+	1. media="place" CSS tag 를 이용한 이미지 타겟 등록
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to use the image target #1 [Using media="place"]</title>
+
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('https://developer.letsee.io/api-tm/target-manager/target-uid/609ca3af398942b60ead2d06');
+            width: 260px;
+            height: 160px;
+            border: 5px solid red;
+        }
+    </style>
+
+    <script src="https://developer.letsee.io/api/webar?key=[AUTHENTICATION_KEY_OF_YOUR_PROJECT]"></script>
+
+</head>
+<body>
+<div id="container">
+    This is the XRElement
+</div>
+<script>
+    letsee.ready(() => {
+        letsee.start();
+    });
+    letsee.init({trackerType: 'image'});
+</script>
+</body>
+</html>

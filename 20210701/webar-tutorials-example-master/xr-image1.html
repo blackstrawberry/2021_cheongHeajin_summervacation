@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: ImageElement #1</title>
+
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+
+    <!-- target description -->
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('[YOUR_TARGET_URI]');
+            width: 260px;
+            height: 160px;
+        }
+    </style>
+
+    <!-- The CSS for DomElement -->
+    <style>
+        img {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- The id of this div tag MUST be the same with id defined in media="place" style.-->
+<div id="container">
+    <img src="./logo.jpg"></img>
+</div>
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+
+    letsee.ready(() => {
+        letsee.start();
+    });
+    letsee.init({trackerType:'image'});
+
+</script>
+</body>
+</html>

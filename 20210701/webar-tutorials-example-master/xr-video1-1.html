@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: Video with EventListener #1</title>
+
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+
+    <!-- target description -->
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('[YOUR_TARGET_URI]');
+            width: 260px;
+            height: 160px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- The id of this div tag MUST be the same with id defined in media="place" style. -->
+<div id="container">
+    <h1 id="tag">Hello world</h1>
+    <video id="myVid" width="260" height="160" src="assets/video/mov_bbb.mp4" playsinline loop></video>
+</div>
+
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+
+    let myVid = document.getElementById('myVid');
+    myVid.style.zIndex = '300';
+
+    let ele = document.getElementById('tag');
+    ele.style.color = '#ffffff';
+    ele.style.backgroundColor = '#000000';
+    ele.style.opacity = '0.3';
+    ele.style.position = 'fixed';
+    ele.style.top = '10px';
+    ele.style.right = '0';
+    ele.style.zIndex = '500';
+    ele.style.fontSize = '18px';
+
+    letsee.ready(() => {
+        letsee.start();
+        letsee.onTrackStart(() => {
+            myVid.play().then(() => {
+                ele.innerHTML = 'trackStart -> Video is playing...';
+            }).catch(err => console.error(err));
+        });
+        letsee.onTrackEnd(() => {
+            myVid.pause();
+            console.warn('trackEnd -> Video paused.');
+        });
+    });
+    letsee.init({trackerType:'image'});
+
+</script>
+</body>
+</html>

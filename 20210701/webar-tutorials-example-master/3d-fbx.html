@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Letsee WebApp: Loading FBX model</title>
+
+    <!-- THREE.js -->
+    <script src="https://unpkg.com/three@0.123.0/build/three.min.js"></script>
+    <!-- FBXLoader -->
+    <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/FBXLoader.js"></script>
+    <script src="https://unpkg.com/three@0.123.0/examples/js/libs/inflate.min.js"></script>
+    <!-- Letsee WebAR SDK -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+
+</head>
+<body>
+<script>
+    let scene;
+    let renderer;
+    let entity;
+    let clock = new THREE.Clock();
+    let light, mesh, mixer;
+    const loader = new THREE.FBXLoader();
+
+    letsee.ready(() => {
+        letsee.start();
+        letsee.addTHREE(THREE).then(obj => {
+            create3DWorld(obj);
+        })
+    });
+    letsee.init();
+
+    const create3DWorld = (obj) => {
+        renderer = obj.renderer;
+        scene = obj.scene;
+
+        light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(0, -95, 120);
+        scene.add(light);
+
+        letsee.addTarget('[YOUR_TARGET_URI]').then(_entity => {
+            entity = _entity;
+
+            loader.load('[YOUR_FBX_MODEL_URI]', function (object) {
+                mesh = object;
+
+                mesh.position.set(0, -95, 50);
+                mesh.visible = true;
+                mesh.scale.setScalar(1);
+
+                // Create custom animation clips
+                if (mesh.animations.length > 0) {
+                    mixer = new THREE.AnimationMixer(mesh);
+                    const action = mixer.clipAction(mesh.animations[0]);
+                    action.play();
+                } else console.error(`Model [${mesh.name}] does not have animation.`);
+
+                entity.add(mesh);
+
+                // Add entity to scene
+                scene.add(entity);
+
+                // Render all
+                const animate = async function () {
+                    requestAnimationFrame(animate);
+                    if (mixer) {
+                        let delta = clock.getDelta();
+                        mixer.update(delta);
+                    }
+                    await letsee.threeRenderer().update(); // Engine mainLoop 수행
+                    const camera = letsee.threeRenderer().getDeviceCamera(); // 매 프레임마다 카메라 얻어옴.
+                    renderer.render(scene, camera); // Three.js 화면 갱신
+                };
+                animate();
+            });
+        });
+    }
+</script>
+</body>
+</html>

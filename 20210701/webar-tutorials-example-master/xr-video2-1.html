@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: Video with button #1</title>
+
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+
+    <!-- Adding configuration .JSON file. -->
+    <style media="place" type="text/css">
+        #container {
+            -letsee-target: uri('[YOUR_TARGET_URI]');
+            width: 260px;
+            height: 160px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- The id of this div tag MUST be the same with id defined in media="place" style. -->
+<div id="container">
+    <video id="myVid" width="260" height="160" src="assets/video/mov_bbb.mp4" playsinline loop></video>
+</div>
+
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+
+    letsee.ready(() => {
+        letsee.start();
+        createElement();
+    });
+    letsee.init({trackerType:'image'});
+
+    const createElement = () => {
+        let container = document.getElementById('container');
+        let myVid = document.getElementById('myVid');
+        myVid.style.zIndex = '300';
+
+        let table = document.createElement('div');
+        table.style.position = 'fixed';
+        table.style.top = '10px';
+        table.style.right = '0';
+        table.style.zIndex = '500';
+
+        let button1 = document.createElement('button');
+        button1.innerHTML = 'Play';
+        button1.addEventListener('click', () => {
+            myVid.play().then(() => alert('Play video')).catch(err => console.error(err));
+        });
+        let button2 = document.createElement('button');
+        button2.innerHTML = 'Pause';
+        button2.addEventListener('click', () => {
+            myVid.pause();
+        });
+
+        table.appendChild(button1);
+        table.appendChild(button2);
+
+        container.appendChild(table);
+    };
+
+</script>
+</body>
+</html>

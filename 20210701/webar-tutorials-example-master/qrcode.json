@@ -1,0 +1,8 @@
+{
+  "uri":"qrcode.json",
+  "qrCodeData": "https://www.naver.com",
+  "physicalSize":{
+    "width": 63,
+    "height": 63
+  }
+}

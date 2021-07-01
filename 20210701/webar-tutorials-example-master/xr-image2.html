@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: ImageElement #2</title>
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+</head>
+<body>
+
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+    letsee.ready(() => {
+        letsee.start();
+        /* TARGET URI 이용한 이미지 타겟 등록 */
+        letsee.addTarget('[YOUR_TARGET_URI]')
+            .then(entity => {
+                /* 증강 대상 DomElement 생성 */
+                let dom = document.createElement('div');
+                dom.id = 'container';
+
+                let img = document.createElement('img');
+                img.id = 'image_01';
+                img.src = './assets/logo.jpg';
+                img.width = 100;
+                img.height = 100;
+                img.position = 'absolute';
+                img.style.transform = ('translate(-50%, -50%)');
+                img.style.top = '50%';
+                img.style.left = '50%';
+
+                dom.appendChild(img);
+                /* XRElement 생성 */
+                let xrElement = letsee.createXRElement(dom);
+                /* XRElement 의 entity 바인딩 */
+                letsee.bindXRElement(xrElement, entity);
+            });
+    });
+    letsee.init({trackerType:'image'});
+
+</script>
+</body>
+</html>

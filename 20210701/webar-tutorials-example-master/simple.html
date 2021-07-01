@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Example</title>
+    <script src="https://developer.letsee.io/api/webar?key=[AUTHENTICATION_KEY_OF_YOUR_PROJECT]"></script>
+</head>
+<body>
+<div id="container">
+    Hello, world!
+</div>
+<script>
+    letsee.ready(() => {
+        letsee.start();
+        letsee.addTarget('https://developer.letsee.io/api-tm/target-manager/target-uid/609ca3af398942b60ead2d06')
+            .then(entity => {
+                let xrElement = letsee.createXRElement(document.getElementById('container'));
+                letsee.bindXRElement(xrElement, entity);
+            });
+    });
+    letsee.init({trackerType: 'image'});
+</script>
+</body>
+</html>

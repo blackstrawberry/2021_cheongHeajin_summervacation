@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: Video with EventListener #2</title>
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+</head>
+<body>
+
+<!-- Loading the Letsee WebAR Engine -->
+<script type="application/javascript">
+
+    letsee.ready(() => {
+        letsee.start();
+        /* TARGET URI 이용한 이미지 타겟 등록 */
+        letsee.addTarget('[YOUR_TARGET_URI]')
+            .then(entity => {
+                /* 증강 대상 DomElement 생성 */
+                let dom = document.createElement('div');
+                dom.id = 'container';
+
+                let myVid = document.createElement('video');
+                myVid.id = 'myVid';
+                myVid.style.width = 260;
+                myVid.style.height = 160;
+                myVid.src = './assets/video/mov_bbb.mp4';
+                myVid.playsinline = true;
+                myVid.loop = true;
+                myVid.style.zIndex = '300';
+
+                dom.appendChild(myVid);
+                /* XRElement 생성 */
+                let xrElement = letsee.createXRElement(dom);
+                /* XRElement 의 entity 바인딩 */
+                letsee.bindXRElement(xrElement, entity);
+            });
+    });
+    letsee.init({trackerType:'image'});
+    letsee.onTrackStart(() => {
+        myVid.play().then(() => console.log('playing')).catch(err => console.error(err));
+    });
+    letsee.onTrackEnd(() => {
+        myVid.pause();
+    });
+</script>
+</body>
+</html>

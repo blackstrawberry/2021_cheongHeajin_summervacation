@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>Letsee WebApp: Loading GLB model</title>
+
+    <!-- THREE.js must be supplied -->
+    <script src="https://unpkg.com/three@0.123.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.123.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <!-- Replace the app key here with your own app key -->
+    <script src="https://developer.letsee.io/api/webar?key=YOUR_AUTHENTICATION_KEY"></script>
+</head>
+<body>
+<script>
+    let scene,
+        camera,
+        renderer,
+        ambientLight,
+        directionalLight,
+        mesh,
+        animations,
+        mixer,
+        entity,
+        clock = new THREE.Clock();
+    let loader = new THREE.GLTFLoader();
+
+    letsee.ready(() => {
+        letsee.start();
+
+        // Activate THREE.js library
+        letsee.addTHREE(THREE).then(obj => {
+            create3DWorld(obj);
+        });
+    });
+    letsee.init();
+
+    const onProgress = (xhr) => {
+        if (xhr.lengthComputable) {
+            const percentComplete = xhr.loaded / xhr.total * 100;
+            console.warn(Math.round(percentComplete) + '%');
+        }
+    };
+
+    const onError = (e) => {
+        console.error(e);
+    };
+
+    const create3DWorld = (obj) => {
+        renderer = obj.renderer;
+        scene = obj.scene;
+
+        ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        ambientLight.position.set(0, 0, 0);
+        scene.add(ambientLight);
+
+        directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(0, -95, 120);
+        scene.add(directionalLight);
+
+        letsee.addTarget('[YOUR_TARGET_URI]').then(_entity => {
+            entity = _entity;
+            loadModel('[YOUR_gLB(glTF)_MODEL_URI]')
+                .then(model => {
+                    mesh = model;
+
+                    // 2.Add mesh into entity
+                    entity.add(mesh);
+
+                    // 3. Add entity to scene
+                    scene.add(entity);
+
+                });
+
+            // Render all
+            const animate = async function() {
+                requestAnimationFrame(animate);
+
+                if (mixer) {
+                    let delta = clock.getDelta();
+                    mixer.update(delta);
+                }
+
+                camera = letsee.threeRenderer().getDeviceCamera();
+                await letsee.threeRenderer().update();
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+        });
+    }
+
+    const loadModel = (path) => {
+        return new Promise((resolve) => {
+            loader.load(path, function (gltf) {
+
+                mesh = gltf.scene;
+                animations = gltf.animations;
+
+                mesh.position.y = -50;
+                mesh.scale.setScalar(30);
+
+                // Play model's animation
+                if (animations.length) {
+                    mixer = new THREE.AnimationMixer(mesh);
+                    let action = mixer.clipAction(animations[0]);
+                    action.play();
+                } else console.warn(`Model does not have animation`);
+
+                resolve(mesh);
+
+            }, onProgress, onError);
+        });
+    }
+
+</script>
+
+</body>
+</html>
